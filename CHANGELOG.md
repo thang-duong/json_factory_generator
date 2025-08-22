@@ -1,3 +1,9 @@
+## 0.1.2
+
+* Lowered minimum Dart SDK requirement to 3.0.0 for broader compatibility
+* Adjusted dependency versions to support wider range of Dart versions
+* Improved compatibility with older Dart installations
+
 ## 0.1.1
 
 * Fixed dependency version constraints for better compatibility

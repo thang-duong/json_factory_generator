@@ -129,21 +129,6 @@ final userList = JsonFactory.fromJson<List<User>>([
 ]);
 ```
 
-## Migration from Previous Versions
-
-**If you used this package with different annotation names before:**
-```dart
-// Old usage
-@autoModel
-@JsonSerializable()
-class User { ... }
-
-// Current usage  
-@jsonModel
-@JsonSerializable()
-class User { ... }
-```
-
 ## Common Issues
 
 - **Target of URI doesn't exist: 'lib/generated/json_factory.dart'**: Run `dart run build_runner build` first.
