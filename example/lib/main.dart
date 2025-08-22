@@ -1,6 +1,7 @@
+import 'package:example/generated/json_factory.dart';
+
 import 'models/user.dart';
 import 'models/post.dart';
-import 'json_factory.dart';
 
 void main() {
   // Example JSON data

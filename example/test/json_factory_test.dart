@@ -1,7 +1,7 @@
+import 'package:example/generated/json_factory.dart';
+import 'package:example/models/post.dart';
+import 'package:example/models/user.dart';
 import 'package:test/test.dart';
-import '../lib/models/user.dart';
-import '../lib/models/post.dart';
-import '../lib/json_factory_config.dart';
 
 // Test class that is not registered with JsonFactory
 class UnregisteredType {
@@ -10,9 +10,6 @@ class UnregisteredType {
 }
 
 void main() {
-  setUpAll(() {
-    initializeJsonFactory();
-  });
 
   group('JsonFactory Tests', () {
     test('should parse single object', () {
