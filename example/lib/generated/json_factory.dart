@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// Generated on: 2025-08-22 10:22:18.436810
+// Generated on: 2025-08-22 10:55:49.505616
 
-import 'models/post.dart';
-import 'models/user.dart';
+import 'package:example/models/post.dart';
+import 'package:example/models/user.dart';
 
 /// Auto-generated JsonFactory configuration
-/// Generated on: 2025-08-22 10:22:18.437408
+/// Generated on: 2025-08-22 10:55:49.506487
 class JsonFactory {
   static final Map<Type, FromJsonFunc> _factories = {
     Post: (json) => Post.fromJson(json as Map<String, dynamic>),

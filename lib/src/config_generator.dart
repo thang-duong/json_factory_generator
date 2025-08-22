@@ -28,7 +28,7 @@ class JsonFactoryConfigGenerator extends Generator {
   final String outputFileName;
   final String outputPath;
   
-  const JsonFactoryConfigGenerator({
+  JsonFactoryConfigGenerator({
     this.outputFileName = 'json_factory',
     this.outputPath = 'lib/generated',
   });
@@ -51,7 +51,9 @@ class JsonFactoryConfigGenerator extends Generator {
     final firstModelFile = models.first.import;
     if (inputPath != firstModelFile) return '';
 
-    return generateFactoryFile(models);
+    // Get package name from buildStep
+    final packageName = buildStep.inputId.package;
+    return generateFactoryFile(models, packageName);
   }
 
   /// Public method to find all annotated models
@@ -60,17 +62,17 @@ class JsonFactoryConfigGenerator extends Generator {
   }
 
   /// Public method to generate the factory file content
-  String generateFactoryFile(List<ModelInfo> models) {
+  String generateFactoryFile(List<ModelInfo> models, String packageName) {
     final buffer = StringBuffer();
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
     buffer.writeln('// Generated on: ${DateTime.now()}');
     buffer.writeln();
     
-    // Add imports for all model files
+    // Add imports for all model files with package imports
     final imports = <String>{};
     for (final model in models) {
-      final relativePath = model.import.replaceFirst('lib/', '');
-      imports.add("import '$relativePath';");
+      final importPath = _calculatePackageImportPath(model.import, packageName);
+      imports.add("import '$importPath';");
     }
     
     for (final import in imports.toList()..sort()) {
@@ -80,6 +82,13 @@ class JsonFactoryConfigGenerator extends Generator {
 
     buffer.write(_generateFactoryClass(models));
     return buffer.toString();
+  }
+
+  /// Calculate package import path from model file path
+  String _calculatePackageImportPath(String modelPath, String packageName) {
+    // Convert lib/models/post.dart -> package:{package_name}/models/post.dart
+    final relativePath = modelPath.replaceFirst('lib/', '');
+    return 'package:$packageName/$relativePath';
   }
 
   /// Finds all model classes annotated with @jsonModel and @JsonSerializable
