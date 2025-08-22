@@ -21,22 +21,62 @@ class ModelInfo {
 }
 
 /// Generates a centralized JsonFactory configuration for all annotated models
-class JsonFactoryConfigGenerator extends GeneratorForAnnotation<JsonFactoryInit> {
+class JsonFactoryConfigGenerator extends Generator {
   static const _dartFilePattern = 'lib/**.dart';
+  
+  /// Configuration options for the generator
+  final String outputFileName;
+  final String outputPath;
+  
+  const JsonFactoryConfigGenerator({
+    this.outputFileName = 'json_factory',
+    this.outputPath = 'lib/generated',
+  });
 
   @override
-  FutureOr<String> generateForAnnotatedElement(
-    Element element,
-    ConstantReader annotation,
-    BuildStep buildStep,
-  ) async {
-    final models = await _findAnnotatedModels(buildStep);
+  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+    // Only generate for lib/models/ files to avoid duplicate generation
+    final inputPath = buildStep.inputId.path;
+    if (!inputPath.startsWith('lib/models/') || inputPath.endsWith('.g.dart')) {
+      return '';
+    }
+    
+    final models = await findAnnotatedModels(buildStep);
+    
+    // Only generate if we have models and this is the first model file processed
+    if (models.isEmpty) return '';
+    
+    // Check if this is the first model file being processed
+    // We'll generate the factory only for the first model file found
+    final firstModelFile = models.first.import;
+    if (inputPath != firstModelFile) return '';
 
-    // Add part directive
+    return generateFactoryFile(models);
+  }
+
+  /// Public method to find all annotated models
+  Future<List<ModelInfo>> findAnnotatedModels(BuildStep buildStep) async {
+    return _findAnnotatedModels(buildStep);
+  }
+
+  /// Public method to generate the factory file content
+  String generateFactoryFile(List<ModelInfo> models) {
     final buffer = StringBuffer();
-    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND\n');
-    buffer.writeln('part of \'${element.source?.uri.pathSegments.last}\';');
-    buffer.writeln('\n');
+    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    buffer.writeln('// Generated on: ${DateTime.now()}');
+    buffer.writeln();
+    
+    // Add imports for all model files
+    final imports = <String>{};
+    for (final model in models) {
+      final relativePath = model.import.replaceFirst('lib/', '');
+      imports.add("import '$relativePath';");
+    }
+    
+    for (final import in imports.toList()..sort()) {
+      buffer.writeln(import);
+    }
+    buffer.writeln();
 
     buffer.write(_generateFactoryClass(models));
     return buffer.toString();

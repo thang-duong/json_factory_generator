@@ -22,24 +22,5 @@ class JsonModel {
   const JsonModel();
 }
 
-/// Annotation for initializing the JsonFactory configuration.
-///
-/// This annotation should be used on a top-level function that
-/// will serve as the initialization point for the JsonFactory.
-///
-/// Example:
-/// ```dart
-/// @jsonFactoryInit
-/// void initializeJsonFactory() {}
-/// ```
-@immutable
-class JsonFactoryInit {
-  /// Creates a new JsonFactoryInit annotation instance
-  const JsonFactoryInit();
-}
-
 /// Constant instance of [JsonModel] annotation
 const jsonModel = JsonModel();
-
-/// Constant instance of [JsonFactoryInit] annotation
-const jsonFactoryInit = JsonFactoryInit();

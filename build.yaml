@@ -2,7 +2,11 @@ builders:
   json_factory_generator:
     import: "package:json_factory_generator/builder.dart"
     builder_factories: ["jsonFactoryBuilder"]
-    build_extensions: {".dart": [".json_factory.dart"]}
+    build_extensions: {"$lib$": ["json_factory.dart"]}
     auto_apply: dependents
     build_to: source
     applies_builders: []
+    defaults:
+      options:
+        output_file_name: "json_factory"
+        output_path: "lib"
