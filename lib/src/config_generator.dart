@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:glob/glob.dart';
@@ -209,7 +209,7 @@ class JsonFactoryConfigGenerator extends Generator {
 
     for (final classElement in libraryReader.classes) {
       if (_isValidModelClass(classElement)) {
-        final className = classElement.name3 ?? 'Unknown';
+        final className = classElement.name ?? 'Unknown';
         log.info('Found model class: $className');
         models.add(
           ModelInfo(
@@ -248,10 +248,10 @@ class JsonFactoryConfigGenerator extends Generator {
   /// Looks for a factory constructor named 'fromJson' that accepts
   /// a Map<String, dynamic> parameter, which is the standard pattern
   /// for JSON deserialization in Dart.
-  bool _hasFromJsonConstructor(ClassElement2 classElement) {
-    for (final constructor in classElement.constructors2) {
+  bool _hasFromJsonConstructor(ClassElement classElement) {
+    for (final constructor in classElement.constructors) {
       // Check if it's a factory constructor named 'fromJson'
-      if (constructor.isFactory && constructor.name3 == 'fromJson') {
+      if (constructor.isFactory && constructor.name == 'fromJson') {
         // Check if it has exactly one parameter of type Map<String, dynamic>
         if (constructor.formalParameters.length == 1) {
           final parameter = constructor.formalParameters.first;
