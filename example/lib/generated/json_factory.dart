@@ -1,26 +1,45 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// Generated on: 2025-08-22 10:55:49.505616
+// Generated on: 2025-08-22 11:30:19.108569
 
 import 'package:example/models/post.dart';
+import 'package:example/models/product.dart';
 import 'package:example/models/user.dart';
 
-/// Auto-generated JsonFactory configuration
-/// Generated on: 2025-08-22 10:55:49.506487
+/// Auto-generated JsonFactory for type-safe JSON parsing
+/// Generated on: 2025-08-22 11:30:19.109570
+/// 
+/// This class provides centralized, type-safe JSON parsing for all
+/// model classes annotated with @jsonModel and @JsonSerializable.
+/// 
+/// Usage:
+///   final user = JsonFactory.fromJson<User>(jsonMap);
+///   final users = JsonFactory.fromJson<List<User>>(jsonList);
 class JsonFactory {
+  /// Internal map of Type to JSON parsing functions.
+  /// Each entry maps a model class Type to its fromJson factory method.
   static final Map<Type, FromJsonFunc> _factories = {
+    Product: (json) => Product.fromJson(json as Map<String, dynamic>),
     Post: (json) => Post.fromJson(json as Map<String, dynamic>),
     User: (json) => User.fromJson(json as Map<String, dynamic>),
   };
 
+  /// Internal map of string type names to actual Dart Types.
+  /// Used for resolving generic types like List<User> at runtime.
   static final Map<String, Type> _typeMap = {
+    'Product': Product,
     'Post': Post,
     'User': User,
   };
 
-  /// Generated list casters to convert `List<dynamic>` into `List<T>` safely
-  /// without long `if/else` chains. Each entry corresponds to a model type
-  /// registered in `_factories`. Keep this in sync with `_factories`.
+  /// Generated list casters for safe List<T> type conversion.
+  /// 
+  /// When parsing List<ModelType>, we first parse each JSON object into
+  /// model instances (creating List<dynamic>), then use these casters
+  /// to safely convert to List<ModelType> with proper generic typing.
+  /// 
+  /// This avoids runtime type errors and provides compile-time safety.
   static final Map<Type, List<dynamic> Function(List<dynamic>)> _listCasters = {
+    Product: (list) => list.cast<Product>().toList(),
     Post: (list) => list.cast<Post>().toList(),
     User: (list) => list.cast<User>().toList(),
   };
@@ -94,5 +113,8 @@ class JsonFactory {
 
 }
 
-/// Type definition for JSON factory functions
+/// Type definition for JSON factory functions.
+/// 
+/// Each registered model type has a corresponding factory function
+/// that takes dynamic JSON data and returns a parsed model instance.
 typedef FromJsonFunc = dynamic Function(dynamic json);

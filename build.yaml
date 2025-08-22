@@ -1,14 +1,25 @@
+# Configuration for json_factory_generator
+# 
+# This file defines how the JsonFactory generator works and can be configured.
+# The generator scans all Dart files for @jsonModel annotations and creates
+# a centralized factory for type-safe JSON parsing.
+
 builders:
+  # Main builder that generates the JsonFactory class
   json_factory_generator:
     import: "package:json_factory_generator/builder.dart"
     builder_factories: ["jsonFactoryBuilder"]
     build_extensions: {"$lib$": ["generated/json_factory.dart"]}
-    auto_apply: dependents
-    build_to: source
-    applies_builders: []
+    auto_apply: dependents  # Automatically applies to packages that depend on this
+    build_to: source        # Generates code in the source directory
+    applies_builders: []    # No additional builders needed
     defaults:
+      # Default file patterns to scan for @jsonModel classes
       generate_for:
         - "lib/**"
+      # Default configuration options (can be overridden in consuming packages)
       options:
+        # Name of the generated file (without .dart extension)
         output_file_name: "json_factory"
+        # Directory where the JsonFactory file should be generated
         output_path: "lib/generated"

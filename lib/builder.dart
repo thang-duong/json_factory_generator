@@ -1,12 +1,41 @@
 import 'package:build/build.dart';
 import 'src/config_generator.dart';
 
-/// Creates and configures the JsonFactory builder
+/// Creates and configures the JsonFactory builder for code generation.
+/// 
+/// This builder is responsible for scanning all Dart files in the project,
+/// finding classes annotated with `@jsonModel`, and generating a centralized
+/// JsonFactory class with type-safe parsing methods.
+/// 
+/// The builder can be configured via build.yaml:
+/// ```yaml
+/// targets:
+///   $default:
+///     builders:
+///       json_factory_generator:jsonFactoryBuilder:
+///         options:
+///           output_path: lib/generated  # Where to place the generated file
+///           output_file_name: json_factory  # Name of generated file (without .dart)
+/// ```
 Builder jsonFactoryBuilder(BuilderOptions options) {
   return JsonFactoryBuilder(options);
 }
 
-/// Custom builder that generates json_factory.dart in configured directory
+/// Custom builder that generates a centralized JsonFactory class.
+/// 
+/// This builder scans the entire project for classes annotated with `@jsonModel`
+/// and `@JsonSerializable`, then generates a single JsonFactory class containing
+/// all the necessary type mappings and factory functions.
+/// 
+/// The generated JsonFactory provides:
+/// - Type-safe JSON parsing via `JsonFactory.fromJson<T>(json)`
+/// - Support for both single objects and lists (List<T>)
+/// - Compile-time type checking
+/// - No runtime initialization required
+/// 
+/// Configuration options:
+/// - `output_path`: Directory where the factory file is generated (default: "lib")
+/// - `output_file_name`: Name of the generated file without extension (default: "json_factory")
 class JsonFactoryBuilder implements Builder {
   final BuilderOptions options;
   

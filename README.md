@@ -1,57 +1,84 @@
 ````markdown
-# auto_model_factory
+# JSON Factory Generator
 
-Auto-register `Type -> fromJson` factories for your `json_serializable` models using `@autoModel`.
+Auto-generate centralized `Type -> fromJson` factories for your models using `@jsonModel` annotation.
 
 ## Install (in your app/package)
 
 ```yaml
 dependencies:
-  auto_model_factory:
-    path: ../auto_model_factory  # or use pub.dev once published
-  json_annotation: ^4.9.0
+  json_factory_generator:
+    path: ../json_factory_generator  # or use pub.dev once published
 
 dev_dependencies:
   build_runner: ^2.4.11
+  # Optional: if using json_serializable for code generation
+  json_annotation: ^4.9.0
   json_serializable: ^6.9.0
 ```
 
 ## Setup
 
-1. **Create an injection file** (e.g., `lib/injection.dart`):
+1. **Annotate your models** with `@jsonModel`:
+
+### Option A: Manual fromJson (No dependencies)
 
 ```dart
-import 'package:auto_model_factory/auto_model_factory.dart';
-// Import all your model files here
-import 'models/user.dart';
-import 'models/post.dart';
+import 'package:json_factory_generator/json_factory_generator.dart';
 
-part 'injection.config.dart';
-
-@injectableInit
-void configureDependencies() {}
+@jsonModel
+class User {
+  final int id;
+  final String name;
+  
+  User({required this.id, required this.name});
+  
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json['id'] as int,
+    name: json['name'] as String,
+  );
+  
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+  };
+}
 ```
 
-2. **Annotate your models**:
+### Option B: With json_serializable (Recommended for complex models)
 
 ```dart
 import 'package:json_annotation/json_annotation.dart';
-import 'package:auto_model_factory/auto_model_factory.dart';
+import 'package:json_factory_generator/json_factory_generator.dart';
 
 part 'user.g.dart';
 
-@autoModel
+@jsonModel
 @JsonSerializable()
 class User {
   final int id;
   final String name;
+  
   User({required this.id, required this.name});
+  
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 ```
 
-> Ensure your model files have `part 'xxx.g.dart';` so the shared part (from this library) can be combined.
+> **Important**: Your model class must have a `fromJson(Map<String, dynamic>)` factory constructor.
+
+2. **Configure build.yaml** (optional - for custom output path):
+
+```yaml
+targets:
+  $default:
+    builders:
+      json_factory_generator:jsonFactoryBuilder:
+        options:
+          output_path: lib/generated  # Default: lib
+          output_file_name: json_factory  # Default: json_factory
+```
 
 ## Generate
 
@@ -61,72 +88,86 @@ dart run build_runner build --delete-conflicting-outputs
 
 This will generate:
 - Model `.g.dart` files (from json_serializable)
-- `injection.config.dart` file containing the `ModelFactory` class
+- `lib/generated/json_factory.dart` file containing the centralized `JsonFactory` class
 
 ## Use
 
 ```dart
 import 'package:flutter/material.dart';
-import 'injection.dart'; // Contains generated ModelFactory
+import 'generated/json_factory.dart'; // Contains generated JsonFactory
 
 void main() {
   // No initialization needed! 🎉
   runApp(const MyApp());
 }
 
-// Use the generated ModelFactory
-final user = ModelFactory.fromJson<User>({"id":1, "name":"Alice"});
-final posts = ModelFactory.fromJson<List<Post>>([
-  {"id": 10, "title": "Hello"},
+// Use the generated JsonFactory
+final user = JsonFactory.fromJson<User>({"id":1, "name":"Alice"});
+final posts = JsonFactory.fromJson<List<Post>>([
+  {"id": 10, "title": "Hello", "content": "Content"},
 ]);
 
-// Additional utilities
-print('Registered types: ${ModelFactory.registeredTypes}');
-print('Is User registered: ${ModelFactory.isRegistered<User>()}');
-print('Is Post type registered: ${ModelFactory.isTypeRegistered("Post")}');
+// List parsing with proper typing
+final userList = JsonFactory.fromJson<List<User>>([
+  {"id": 1, "name": "Alice"},
+  {"id": 2, "name": "Bob"}
+]);
 ```
 
-## Migration from v0.0.x
+## Migration from Previous Versions
 
-**Before:**
+**If you used this package with different annotation names before:**
 ```dart
-void main() {
-  ModelFactory.init(); // Required
-  runApp(MyApp());
-}
+// Old usage
+@autoModel
+@JsonSerializable()
+class User { ... }
+
+// Current usage  
+@jsonModel
+@JsonSerializable()
+class User { ... }
 ```
 
-**After:**
-```dart
-import 'injection.dart'; // Add this import
+## Common Issues
 
-void main() {
-  // No init needed!
-  runApp(MyApp());
-}
-```
-
-## Common issues
-
-- *Target of URI doesn't exist: 'injection.config.dart'*: Run `dart run build_runner build` first.
-- *Factory for type X not found*: missing `@autoModel` annotation.
-- *No part file*: ensure `part 'your_file.g.dart';` exists in each model library.
-- *Unused import warnings*: The imports in injection.dart are needed for the generated code to work.
+- **Target of URI doesn't exist: 'lib/generated/json_factory.dart'**: Run `dart run build_runner build` first.
+- **Factory for type X not found**: Make sure your class has `@jsonModel` annotation and `fromJson` factory constructor.
+- **No part file**: Only needed if using `@JsonSerializable()` - ensure `part 'your_file.g.dart';` exists.
+- **Build fails**: Try `dart run build_runner clean` then `dart run build_runner build`.
+- **Import errors**: Make sure to import the generated factory file correctly.
+- **fromJson not found**: Ensure your class has `factory ClassName.fromJson(Map<String, dynamic> json)` constructor.
 
 ## Features
 
 - ✅ **Zero runtime initialization** - everything is compile-time generated
-- ✅ **Type-safe** - compile-time checking of model registrations  
-- ✅ **Auto-discovery** - automatically finds all `@autoModel` classes
-- ✅ **List support** - handles `List<T>` parsing automatically with proper typing
-- ✅ **Debugging utilities** - check registered types and registration status
-- ✅ **Injectable-style** - similar workflow to injectable package
+- ✅ **Type-safe JSON parsing** - compile-time checking with proper generics
+- ✅ **Auto-discovery** - automatically finds all `@jsonModel` classes with `fromJson` method
+- ✅ **List support** - handles `List<T>` parsing with proper type casting
+- ✅ **Flexible** - works with manual `fromJson` or `json_serializable` generated methods
+- ✅ **No forced dependencies** - `json_serializable` is optional, not required
+- ✅ **Configurable output** - customize output path and filename
+- ✅ **Error handling** - clear error messages for debugging
+- ✅ **Build integration** - works seamlessly with build_runner
 
 ## How it works
 
-1. **Annotation scanning**: The generator scans all Dart files for `@autoModel` classes
-2. **Code generation**: Creates a centralized `ModelFactory` class with all registered types
-3. **Type-safe parsing**: Uses compile-time generated code for type-safe JSON parsing
-4. **No runtime setup**: Everything is generated at build time, no initialization needed
+1. **Annotation scanning**: The generator scans all Dart files for `@jsonModel` classes
+2. **Code generation**: Creates a centralized `JsonFactory` class with type-safe factories
+3. **Type mapping**: Generates internal maps for efficient type lookup and casting
+4. **List handling**: Special logic for parsing `List<T>` with proper generic types
+5. **No runtime setup**: Everything is generated at build time, zero initialization needed
+
+## Architecture
+
+```
+Your Models (@jsonModel) 
+     ↓
+Generator scans files
+     ↓  
+Generates JsonFactory class
+     ↓
+Type-safe fromJson<T>() method
+```
 
 ````
