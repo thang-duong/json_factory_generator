@@ -231,9 +231,9 @@ class JsonFactoryConfigGenerator extends Generator {
   ///
   /// This ensures that the class has both the intent to be included (via @jsonModel)
   /// and the necessary fromJson factory method for JSON parsing.
-  bool _isValidModelClass(ClassElement2 classElement) {
+  bool _isValidModelClass(ClassElement classElement) {
     final hasJsonModel =
-        TypeChecker.fromRuntime(JsonModel).hasAnnotationOfExact(classElement);
+        TypeChecker.typeNamed(JsonModel).hasAnnotationOfExact(classElement);
 
     if (!hasJsonModel) return false;
 
