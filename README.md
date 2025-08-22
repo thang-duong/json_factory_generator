@@ -1,6 +1,23 @@
 # JSON Factory Generator
 
-Auto-generate centralized `Type -> fromJson` factories for your models using `@jsonModel` annotation.
+A powerful Dart code generator that creates centralized, type-safe JSON factories for your models. Automatically discovers classes annotated with `@jsonModel` and generates a unified `JsonFactory` with support for both single objects and `List<T>` parsing.
+
+[![Pub Package](https://img.shields.io/pub/v/json_factory_generator.svg)](https://pub.dev/packages/json_factory_generator)
+[![Dart Version](https://badgen.net/pub/sdk-version/json_factory_generator)](https://pub.dev/packages/json_factory_generator)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Features
+
+- ✅ **Zero runtime initialization** - everything is compile-time generated
+- ✅ **Type-safe JSON parsing** - compile-time checking with proper generics
+- ✅ **Auto-discovery** - automatically finds all `@jsonModel` classes with `fromJson` method
+- ✅ **List support** - handles `List<T>` parsing with proper type casting
+- ✅ **Flexible** - works with manual `fromJson` or `json_serializable` generated methods
+- ✅ **No forced dependencies** - `json_serializable` is optional, not required
+- ✅ **Configurable output** - customize output path and filename
+- ✅ **Error handling** - clear error messages for debugging
+- ✅ **Build integration** - works seamlessly with build_runner
+- ✅ **Platform support** - supports all Dart platforms (Android, iOS, Web, Desktop)
 
 ## Install (in your app/package)
 

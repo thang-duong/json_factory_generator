@@ -15,19 +15,20 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json['id'] as int,
-    name: json['name'] as String,
-    price: (json['price'] as num).toDouble(),
-    inStock: json['inStock'] as bool,
-  );
+        id: json['id'] as int,
+        name: json['name'] as String,
+        price: (json['price'] as num).toDouble(),
+        inStock: json['inStock'] as bool,
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'price': price,
-    'inStock': inStock,
-  };
+        'id': id,
+        'name': name,
+        'price': price,
+        'inStock': inStock,
+      };
 
   @override
-  String toString() => 'Product(id: $id, name: $name, price: \$$price, inStock: $inStock)';
+  String toString() =>
+      'Product(id: $id, name: $name, price: \$$price, inStock: $inStock)';
 }

@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Annotation for marking a class to be included in the auto-generated JsonFactory.
 ///
-/// Use this annotation to automatically register your model class in the 
+/// Use this annotation to automatically register your model class in the
 /// centralized JsonFactory for type-safe JSON parsing.
 ///
 /// The JsonFactory generator will scan all files for classes with this annotation
@@ -22,12 +22,12 @@ import 'package:meta/meta.dart';
 ///   final int age;
 ///
 ///   User({required this.name, required this.age});
-///   
+///
 ///   factory User.fromJson(Map<String, dynamic> json) => User(
 ///     name: json['name'] as String,
 ///     age: json['age'] as int,
 ///   );
-///   
+///
 ///   Map<String, dynamic> toJson() => {
 ///     'name': name,
 ///     'age': age,
@@ -49,7 +49,7 @@ import 'package:meta/meta.dart';
 ///   final int age;
 ///
 ///   User({required this.name, required this.age});
-///   
+///
 ///   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 ///   Map<String, dynamic> toJson() => _$UserToJson(this);
 /// }
@@ -63,14 +63,14 @@ import 'package:meta/meta.dart';
 @immutable
 class JsonModel {
   /// Creates a new JsonModel annotation instance.
-  /// 
+  ///
   /// This annotation has no configuration options - simply add `@jsonModel`
   /// to any class that should be included in the generated JsonFactory.
   const JsonModel();
 }
 
 /// Constant instance of [JsonModel] annotation.
-/// 
+///
 /// Use this to mark your model classes for inclusion in the JsonFactory:
 /// ```dart
 /// @jsonModel

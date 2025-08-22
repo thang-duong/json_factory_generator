@@ -11,7 +11,6 @@ class UnregisteredType {
 }
 
 void main() {
-
   group('JsonFactory Tests', () {
     test('should parse single User object', () {
       final json = {'id': 1, 'name': 'Test User'};
@@ -24,7 +23,7 @@ void main() {
 
     test('should parse single Product object (manual fromJson)', () {
       final json = {
-        'id': 100, 
+        'id': 100,
         'name': 'Test Product',
         'price': 29.99,
         'inStock': true

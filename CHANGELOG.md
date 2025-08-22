@@ -1,3 +1,10 @@
+## 0.1.1
+
+* Fixed dependency version constraints for better compatibility
+* Added platform support for all major platforms (Android, iOS, Linux, macOS, Web, Windows)
+* Fixed example package publish configuration
+* Improved static analysis score
+
 ## 0.1.0
 
 * Initial release
