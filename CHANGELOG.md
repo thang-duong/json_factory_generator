@@ -1,3 +1,8 @@
+## 0.1.5
+
+* Version bump and package improvements
+* Maintenance release with updated dependencies and documentation
+
 ## 0.1.4
 
 * Fixed package description length to comply with pub.dev guidelines (under 180 characters)
