@@ -1,4 +1,7 @@
 name: json_factory_generator
+description: A code generator that creates centralized, type-safe JSON factories for Dart models with automatic discovery and List<T> support.
+version: 0.1.4
+homepage: https://github.com/thang-duong/json_factory_generator: json_factory_generator
 description: A code generator that creates centralized, type-safe JSON factories for Dart models with support for single objects and List<T> parsing.
 version: 0.1.3
 homepage: https://github.com/thang-duong/json_factory_generator

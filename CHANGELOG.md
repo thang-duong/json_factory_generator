@@ -1,3 +1,10 @@
+## 0.1.4
+
+* Fixed package description length to comply with pub.dev guidelines (under 180 characters)
+* Added missing `meta` dependency for enhanced code generation capabilities
+* Improved package metadata and lint compliance
+* Code quality improvements and better documentation
+
 ## 0.1.3
 
 * Package maintenance and publishing improvements
