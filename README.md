@@ -9,7 +9,7 @@ A powerful Dart code generator that creates centralized, type-safe JSON factorie
 ## Features
 
 - ✅ **Zero runtime initialization** - everything is compile-time generated
-- ✅ **Type-safe JSON parsing** - compile-time checking with proper generics
+- ✅ **Type-safe JSON parsing** - compile-time checking with proper generics  
 - ✅ **Auto-discovery** - automatically finds all `@jsonModel` classes with `fromJson` method
 - ✅ **List support** - handles `List<T>` parsing with proper type casting
 - ✅ **Flexible** - works with manual `fromJson` or `json_serializable` generated methods
@@ -19,11 +19,13 @@ A powerful Dart code generator that creates centralized, type-safe JSON factorie
 - ✅ **Build integration** - works seamlessly with build_runner
 - ✅ **Platform support** - supports all Dart platforms (Android, iOS, Web, Desktop)
 
-## Install (in your app/package)
+## Install
+
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  json_factory_generator: ^0.1.0
+  json_factory_generator: ^0.1.4
 
 dev_dependencies:
   build_runner: ^2.4.11
@@ -98,14 +100,15 @@ targets:
 ## Generate
 
 ```bash
+```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
 
 This will generate:
-- Model `.g.dart` files (from json_serializable)
+- Model `.g.dart` files (if using json_serializable)
 - `lib/generated/json_factory.dart` file containing the centralized `JsonFactory` class
 
-## Use
+## Usage
 
 ```dart
 import 'package:flutter/material.dart';
@@ -116,39 +119,21 @@ void main() {
   runApp(const MyApp());
 }
 
-// Use the generated JsonFactory
-final user = JsonFactory.fromJson<User>({"id":1, "name":"Alice"});
+// Parse single objects
+final user = JsonFactory.fromJson<User>({"id": 1, "name": "Alice"});
+
+// Parse lists with proper typing
 final posts = JsonFactory.fromJson<List<Post>>([
   {"id": 10, "title": "Hello", "content": "Content"},
+  {"id": 11, "title": "World", "content": "More content"},
 ]);
 
-// List parsing with proper typing
+// Type-safe list parsing
 final userList = JsonFactory.fromJson<List<User>>([
   {"id": 1, "name": "Alice"},
   {"id": 2, "name": "Bob"}
 ]);
 ```
-
-## Common Issues
-
-- **Target of URI doesn't exist: 'lib/generated/json_factory.dart'**: Run `dart run build_runner build` first.
-- **Factory for type X not found**: Make sure your class has `@jsonModel` annotation and `fromJson` factory constructor.
-- **No part file**: Only needed if using `@JsonSerializable()` - ensure `part 'your_file.g.dart';` exists.
-- **Build fails**: Try `dart run build_runner clean` then `dart run build_runner build`.
-- **Import errors**: Make sure to import the generated factory file correctly.
-- **fromJson not found**: Ensure your class has `factory ClassName.fromJson(Map<String, dynamic> json)` constructor.
-
-## Features
-
-- ✅ **Zero runtime initialization** - everything is compile-time generated
-- ✅ **Type-safe JSON parsing** - compile-time checking with proper generics
-- ✅ **Auto-discovery** - automatically finds all `@jsonModel` classes with `fromJson` method
-- ✅ **List support** - handles `List<T>` parsing with proper type casting
-- ✅ **Flexible** - works with manual `fromJson` or `json_serializable` generated methods
-- ✅ **No forced dependencies** - `json_serializable` is optional, not required
-- ✅ **Configurable output** - customize output path and filename
-- ✅ **Error handling** - clear error messages for debugging
-- ✅ **Build integration** - works seamlessly with build_runner
 
 ## How it works
 
@@ -169,3 +154,62 @@ Generates JsonFactory class
      ↓
 Type-safe fromJson<T>() method
 ```
+
+## Troubleshooting
+
+### Common Issues
+
+- **Target of URI doesn't exist: 'lib/generated/json_factory.dart'**: 
+  - Run `dart run build_runner build` first to generate the factory file.
+  
+- **Factory for type X not found**: 
+  - Ensure your class has `@jsonModel` annotation and `fromJson` factory constructor.
+  - Check that the class is in a file under `lib/` directory.
+  
+- **No part file**: 
+  - Only needed if using `@JsonSerializable()` - ensure `part 'your_file.g.dart';` exists.
+  
+- **Build fails**: 
+  - Try `dart run build_runner clean` then `dart run build_runner build`.
+  
+- **Import errors**: 
+  - Make sure to import the generated factory file correctly: `import 'generated/json_factory.dart';`
+  
+- **fromJson not found**: 
+  - Ensure your class has `factory ClassName.fromJson(Map<String, dynamic> json)` constructor.
+
+### Build Commands
+
+```bash
+# Clean previous builds
+dart run build_runner clean
+
+# Generate code
+dart run build_runner build
+
+# Generate with conflict resolution
+dart run build_runner build --delete-conflicting-outputs
+
+# Watch for changes (development)
+dart run build_runner watch
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 📫 Issues: [GitHub Issues](https://github.com/thang-duong/json_factory_generator/issues)
+- 📖 Documentation: [pub.dev](https://pub.dev/packages/json_factory_generator)
+- 💬 Discussions: [GitHub Discussions](https://github.com/thang-duong/json_factory_generator/discussions)
