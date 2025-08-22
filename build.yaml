@@ -13,10 +13,14 @@ builders:
     auto_apply: dependents  # Automatically applies to packages that depend on this
     build_to: source        # Generates code in the source directory
     applies_builders: []    # No additional builders needed
+    is_optional: false      # Required for cache optimization
+    runs_before: []         # No dependencies on other builders
     defaults:
       # Default file patterns to scan for @jsonModel classes
       generate_for:
         - "lib/**"
+        - "!lib/**.g.dart"     # Exclude generated files for better cache
+        - "!lib/generated/**"  # Exclude our own generated output
       # Default configuration options (can be overridden in consuming packages)
       options:
         # Name of the generated file (without .dart extension)

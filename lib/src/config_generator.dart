@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:glob/glob.dart';
@@ -82,7 +82,22 @@ class JsonFactoryConfigGenerator extends Generator {
 
     // Get package name from buildStep
     final packageName = buildStep.inputId.package;
+    
+    // Generate content hash for cache optimization
+    final contentHash = _generateContentHash(models, packageName);
+    log.info('Content hash for cache: $contentHash');
+    
     return generateFactoryFile(models, packageName);
+  }
+
+  /// Generates a content hash based on model metadata for cache optimization
+  String _generateContentHash(List<ModelInfo> models, String packageName) {
+    final buffer = StringBuffer();
+    buffer.write(packageName);
+    for (final model in models) {
+      buffer.write('${model.name}:${model.import}');
+    }
+    return buffer.toString().hashCode.toString();
   }
 
   /// Public method to find all annotated models in the project.
@@ -112,7 +127,6 @@ class JsonFactoryConfigGenerator extends Generator {
   String generateFactoryFile(List<ModelInfo> models, String packageName) {
     final buffer = StringBuffer();
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
-    buffer.writeln('// Generated on: ${DateTime.now()}');
     buffer.writeln();
 
     // Add imports for all model files with package imports
@@ -195,10 +209,11 @@ class JsonFactoryConfigGenerator extends Generator {
 
     for (final classElement in libraryReader.classes) {
       if (_isValidModelClass(classElement)) {
-        log.info('Found model class: ${classElement.name}');
+        final className = classElement.name3 ?? 'Unknown';
+        log.info('Found model class: $className');
         models.add(
           ModelInfo(
-            name: classElement.name,
+            name: className,
             import: _getImportPath(assetId),
           ),
         );
@@ -216,7 +231,7 @@ class JsonFactoryConfigGenerator extends Generator {
   ///
   /// This ensures that the class has both the intent to be included (via @jsonModel)
   /// and the necessary fromJson factory method for JSON parsing.
-  bool _isValidModelClass(ClassElement classElement) {
+  bool _isValidModelClass(ClassElement2 classElement) {
     final hasJsonModel =
         TypeChecker.fromRuntime(JsonModel).hasAnnotationOfExact(classElement);
 
@@ -233,13 +248,13 @@ class JsonFactoryConfigGenerator extends Generator {
   /// Looks for a factory constructor named 'fromJson' that accepts
   /// a Map<String, dynamic> parameter, which is the standard pattern
   /// for JSON deserialization in Dart.
-  bool _hasFromJsonConstructor(ClassElement classElement) {
-    for (final constructor in classElement.constructors) {
+  bool _hasFromJsonConstructor(ClassElement2 classElement) {
+    for (final constructor in classElement.constructors2) {
       // Check if it's a factory constructor named 'fromJson'
-      if (constructor.isFactory && constructor.name == 'fromJson') {
+      if (constructor.isFactory && constructor.name3 == 'fromJson') {
         // Check if it has exactly one parameter of type Map<String, dynamic>
-        if (constructor.parameters.length == 1) {
-          final parameter = constructor.parameters.first;
+        if (constructor.formalParameters.length == 1) {
+          final parameter = constructor.formalParameters.first;
           final parameterType = parameter.type.toString();
 
           // Check for Map<String, dynamic> parameter
@@ -268,7 +283,6 @@ class JsonFactoryConfigGenerator extends Generator {
     final buffer = StringBuffer();
 
     buffer.writeln('/// Auto-generated JsonFactory for type-safe JSON parsing');
-    buffer.writeln('/// Generated on: ${DateTime.now()}');
     buffer.writeln('/// ');
     buffer.writeln(
         '/// This class provides centralized, type-safe JSON parsing for all');

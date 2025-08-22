@@ -1,16 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// Generated on: 2025-08-22 11:30:19.108569
 
 import 'package:example/models/post.dart';
 import 'package:example/models/product.dart';
 import 'package:example/models/user.dart';
 
 /// Auto-generated JsonFactory for type-safe JSON parsing
-/// Generated on: 2025-08-22 11:30:19.109570
-///
+/// 
 /// This class provides centralized, type-safe JSON parsing for all
 /// model classes annotated with @jsonModel and @JsonSerializable.
-///
+/// 
 /// Usage:
 ///   final user = JsonFactory.fromJson<User>(jsonMap);
 ///   final users = JsonFactory.fromJson<List<User>>(jsonList);
@@ -32,18 +30,17 @@ class JsonFactory {
   };
 
   /// Generated list casters for safe List<T> type conversion.
-  ///
+  /// 
   /// When parsing List<ModelType>, we first parse each JSON object into
   /// model instances (creating List<dynamic>), then use these casters
   /// to safely convert to List<ModelType> with proper generic typing.
-  ///
+  /// 
   /// This avoids runtime type errors and provides compile-time safety.
   static final Map<Type, List<dynamic> Function(List<dynamic>)> _listCasters = {
     Product: (list) => list.cast<Product>().toList(),
     Post: (list) => list.cast<Post>().toList(),
     User: (list) => list.cast<User>().toList(),
   };
-
   /// Converts JSON data to the specified type T
   /// Supports both single objects and lists
   static T fromJson<T>(dynamic json) {
@@ -78,8 +75,7 @@ class JsonFactory {
     // Look up the actual Dart Type from the generated type map.
     final dartType = _typeMap[innerTypeName];
     if (dartType == null) {
-      throw ArgumentError(
-          'Unknown type $innerTypeName in List<$innerTypeName>');
+      throw ArgumentError('Unknown type $innerTypeName in List<$innerTypeName>');
     }
 
     // Step 1: Map raw JSON to model instances using the correct factory.
@@ -112,10 +108,11 @@ class JsonFactory {
 
     return factory(json) as T;
   }
+
 }
 
 /// Type definition for JSON factory functions.
-///
+/// 
 /// Each registered model type has a corresponding factory function
 /// that takes dynamic JSON data and returns a parsed model instance.
 typedef FromJsonFunc = dynamic Function(dynamic json);
