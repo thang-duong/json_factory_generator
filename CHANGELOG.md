@@ -1,3 +1,10 @@
+## 0.1.3
+
+* Package maintenance and publishing improvements
+* Updated documentation and examples
+* Improved package metadata and description
+* Enhanced code quality and consistency
+
 ## 0.1.2
 
 * Lowered minimum Dart SDK requirement to 3.0.0 for broader compatibility
