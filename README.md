@@ -127,6 +127,120 @@ final posts = JsonFactory.fromJson<List<Post>>([
   {"id": 10, "title": "Hello", "content": "Content"},
   {"id": 11, "title": "World", "content": "More content"},
 ]);
+```
+
+## Generic API Response Wrapper
+
+The library includes a powerful `BaseResponse<T>` class for handling API responses with generic type support:
+
+```dart
+import 'package:example/generated/json_factory.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'base_response.g.dart';
+
+/// Generic API response wrapper with JsonSerializable
+@JsonSerializable(genericArgumentFactories: true)
+class BaseResponse<T> {
+  final bool success;
+  final String message;
+  @DataConverter()
+  final T? data;
+  final int? code;
+
+  BaseResponse({
+    required this.success,
+    required this.message,
+    this.data,
+    this.code,
+  });
+
+  /// Generated fromJson with generic type support
+  factory BaseResponse.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) => _$BaseResponseFromJson(json, fromJsonT);
+
+  /// Generated toJson with generic type support
+  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
+      _$BaseResponseToJson(this, toJsonT);
+
+  @override
+  String toString() {
+    return 'BaseResponse(success: $success, message: $message, data: $data, code: $code)';
+  }
+}
+
+class DataConverter<T> implements JsonConverter<T?, Object?> {
+  const DataConverter();
+
+  @override
+  T? fromJson(Object? json) {
+    return JsonFactory.fromJson(json);
+  }
+
+  @override
+  Object? toJson(T? object) {
+    return object;
+  }
+}
+```
+
+### BaseResponse Usage Examples
+
+```dart
+// Single user response
+final userResponse = BaseResponse<User>.fromJson(
+  {
+    "success": true,
+    "message": "User fetched successfully", 
+    "data": {"id": 1, "name": "John Doe"},
+    "code": 200
+  },
+  (json) => User.fromJson(json as Map<String, dynamic>),
+);
+
+// List of posts response
+final postsResponse = BaseResponse<List<Post>>.fromJson(
+  {
+    "success": true,
+    "message": "Posts retrieved",
+    "data": [
+      {"id": 1, "title": "First Post", "content": "Content 1"},
+      {"id": 2, "title": "Second Post", "content": "Content 2"}
+    ],
+    "code": 200
+  },
+  (json) => (json as List).map((item) => Post.fromJson(item)).toList(),
+);
+
+// Error response
+final errorResponse = BaseResponse<User?>.fromJson(
+  {
+    "success": false,
+    "message": "User not found",
+    "data": null,
+    "code": 404
+  },
+  (json) => json != null ? User.fromJson(json as Map<String, dynamic>) : null,
+);
+
+// Access response data
+if (userResponse.success) {
+  print('User: ${userResponse.data?.name}');
+} else {
+  print('Error: ${userResponse.message}');
+}
+```
+
+### BaseResponse Benefits
+
+- ✅ **Type-safe generic responses** - compile-time type checking for API data
+- ✅ **Consistent API structure** - standardized response format across your app
+- ✅ **Auto JSON conversion** - leverages JsonFactory for seamless data parsing
+- ✅ **Error handling** - built-in success/failure status with error codes
+- ✅ **Flexible data types** - supports any type T including primitives, objects, and lists
+- ✅ **Null safety** - proper handling of nullable data fields
 
 // Type-safe list parsing
 final userList = JsonFactory.fromJson<List<User>>([

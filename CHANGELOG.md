@@ -1,3 +1,11 @@
+## 0.1.6
+
+* Added comprehensive BaseResponse<T> documentation with usage examples
+* Enhanced README with BaseResponse generic API wrapper section
+* Added detailed examples for handling API responses with type safety
+* Improved documentation structure and clarity
+* Updated examples to showcase BaseResponse benefits and use cases
+
 ## 0.1.5
 
 * Version bump and package improvements

@@ -1,0 +1,9 @@
+# Temporary build configuration to avoid issues with json_factory_generator
+targets:
+  $default:
+    builders:
+      # Comment out json_factory_generator for now
+      # json_factory_generator:jsonFactoryBuilder:
+      #   enabled: false
+      json_serializable:
+        enabled: true
