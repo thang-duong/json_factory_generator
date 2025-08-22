@@ -1,16 +1,12 @@
 import 'models/user.dart';
 import 'models/post.dart';
-import 'json_factory_config.dart';
+import 'json_factory.dart';
 
 void main() {
-  // Initialize JSON factory configurations
-  initializeJsonFactory();
-
   // Example JSON data
   final userJson = {
     'id': 1,
     'name': 'John Doe',
-    'email': 'john@example.com'
   };
 
   final postJson = {
@@ -19,12 +15,22 @@ void main() {
     'content': 'This is my first post'
   };
 
-  // Parse JSON data
+  final postsJson = [
+    {'id': 1, 'title': 'Post 1', 'content': 'Content 1'},
+    {'id': 2, 'title': 'Post 2', 'content': 'Content 2'},
+  ];
+
+  // Parse JSON data using auto-generated JsonFactory
   final user = JsonFactory.fromJson<User>(userJson);
   final post = JsonFactory.fromJson<Post>(postJson);
+  final posts = JsonFactory.fromJson<List<Post>>(postsJson);
 
   // Print results
-  print('User: ${user.name}');
+  print('User: ${user.name} (ID: ${user.id})');
   print('Post: ${post.title}');
   print('Post content: ${post.content}');
+  print('Posts count: ${posts.length}');
+  for (final p in posts) {
+    print('- ${p.title}: ${p.content}');
+  }
 }

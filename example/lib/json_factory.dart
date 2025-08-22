@@ -1,15 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// Generated on: 2025-08-22 10:22:18.436810
 
-// **************************************************************************
-// JsonFactoryConfigGenerator
-// **************************************************************************
-
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-part of 'json_factory_config.dart';
+import 'models/post.dart';
+import 'models/user.dart';
 
 /// Auto-generated JsonFactory configuration
-/// Generated on: 2025-08-21 21:01:52.748974
+/// Generated on: 2025-08-22 10:22:18.437408
 class JsonFactory {
   static final Map<Type, FromJsonFunc> _factories = {
     Post: (json) => Post.fromJson(json as Map<String, dynamic>),
@@ -28,7 +24,6 @@ class JsonFactory {
     Post: (list) => list.cast<Post>().toList(),
     User: (list) => list.cast<User>().toList(),
   };
-
   /// Converts JSON data to the specified type T
   /// Supports both single objects and lists
   static T fromJson<T>(dynamic json) {
@@ -63,8 +58,7 @@ class JsonFactory {
     // Look up the actual Dart Type from the generated type map.
     final dartType = _typeMap[innerTypeName];
     if (dartType == null) {
-      throw ArgumentError(
-          'Unknown type $innerTypeName in List<$innerTypeName>');
+      throw ArgumentError('Unknown type $innerTypeName in List<$innerTypeName>');
     }
 
     // Step 1: Map raw JSON to model instances using the correct factory.
@@ -97,6 +91,7 @@ class JsonFactory {
 
     return factory(json) as T;
   }
+
 }
 
 /// Type definition for JSON factory functions
