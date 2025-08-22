@@ -7,8 +7,7 @@ Auto-generate centralized `Type -> fromJson` factories for your models using `@j
 
 ```yaml
 dependencies:
-  json_factory_generator:
-    path: ../json_factory_generator  # or use pub.dev once published
+  json_factory_generator: ^0.1.0
 
 dev_dependencies:
   build_runner: ^2.4.11
