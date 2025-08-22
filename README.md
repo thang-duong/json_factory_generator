@@ -1,4 +1,3 @@
-````markdown
 # JSON Factory Generator
 
 Auto-generate centralized `Type -> fromJson` factories for your models using `@jsonModel` annotation.
@@ -168,5 +167,3 @@ Generates JsonFactory class
      ↓
 Type-safe fromJson<T>() method
 ```
-
-````
