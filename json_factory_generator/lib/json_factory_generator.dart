@@ -55,5 +55,4 @@
 /// and generates a centralized factory with type-safe parsing capabilities.
 library json_factory_generator;
 
-export 'src/annotations.dart';
 export 'builder.dart';

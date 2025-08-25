@@ -1,3 +1,4 @@
+import 'package:json_factory_annotation/json_factory_annotation.dart';
 import 'package:json_factory_generator/json_factory_generator.dart';
 
 @jsonModel
