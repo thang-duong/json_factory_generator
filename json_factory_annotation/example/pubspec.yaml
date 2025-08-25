@@ -1,0 +1,14 @@
+name: json_factory_annotation_example
+description: Example for json_factory_annotation package showing how to use annotations for JSON serialization.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  json_factory_annotation:
+    path: ../
+
+dev_dependencies:
+  lints: ^3.0.0
