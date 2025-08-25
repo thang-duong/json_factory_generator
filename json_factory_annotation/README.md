@@ -15,10 +15,10 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  json_factory_annotation: ^0.1.0
+  json_factory_annotation: ^1.0.0
 
 dev_dependencies:
-  json_factory_generator: ^0.1.0
+  json_factory_generator: ^1.0.0
   build_runner: ^2.4.0
 ```
 
