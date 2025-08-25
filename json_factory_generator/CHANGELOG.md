@@ -1,4 +1,31 @@
-## 0.1.6
+## 1.0.0 - 2025-08-25
+
+First stable release with production-ready features.
+
+### Added
+- Production-ready code generation implementation
+- Robust error handling and reporting system
+- Comprehensive documentation with examples
+- Complete test coverage for all features
+- Advanced support for complex object graphs
+- Enhanced type discovery system
+- Improved support for List<T> and generic types
+- Refined BaseResponse<T> implementation
+- Integration with latest Dart analyzer
+- Performance optimizations
+
+### Changed
+- Enhanced build configuration
+- Improved error messages
+- Updated all dependencies to latest stable versions
+- Refined code generation templates
+
+### Migration
+- No breaking changes from 0.1.x series
+- All existing generated code will continue to work
+- Improved backwards compatibility
+
+## 0.1.6 - 0.1.7
 
 * Added comprehensive BaseResponse<T> documentation with usage examples
 * Enhanced README with BaseResponse generic API wrapper section
