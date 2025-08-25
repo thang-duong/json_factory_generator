@@ -1,3 +1,9 @@
+## 1.0.1+1 - 2025-08-25
+
+### Changed
+
+- Update doc and optimal Helper
+
 ## 1.0.0 - 2025-08-25
 
 First stable release with production-ready features.
