@@ -135,7 +135,6 @@ final users = JsonFactory.fromJsonList<User>(jsonList);
 ```
 
 ```bash
-```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
 
@@ -277,11 +276,6 @@ if (userResponse.success) {
 - ✅ **Flexible data types** - supports any type T including primitives, objects, and lists
 - ✅ **Null safety** - proper handling of nullable data fields
 
-// Type-safe list parsing
-final userList = JsonFactory.fromJson<List<User>>([
-  {"id": 1, "name": "Alice"},
-  {"id": 2, "name": "Bob"}
-]);
 ```
 
 ## How it works

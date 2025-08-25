@@ -1,3 +1,12 @@
+## 1.0.1 - 2025-08-25
+
+### Changed
+- Enhanced documentation in json_factory_annotation package
+- Improved README files with better structure and examples
+- Added detailed annotation usage explanations
+- Fixed code formatting in documentation
+- Added comprehensive examples for json_serializable integration
+
 ## 1.0.0 - 2025-08-25
 
 First stable release of the project, including both json_factory_annotation and json_factory_generator packages.
@@ -22,21 +31,27 @@ First stable release of the project, including both json_factory_annotation and 
 - All existing code will continue to work as expected
 - Improved backwards compatibility
 
-## 0.1.6 - 0.1.7
+## 0.1.7 - 2025-08-20
 
-* Enhanced BaseResponse<T> implementation with better type safety
-* Added unit tests for BaseResponse error handling
-* Improved documentation and examples 
-* Fixed code formatting and documentation style
-* Added API usage examples in README
+### Added
+- Enhanced BaseResponse<T> implementation with better type safety
+- Added unit tests for BaseResponse error handling
+- Added API usage examples in README
 
-## 0.1.6
+### Changed
+- Improved documentation and examples
+- Fixed code formatting and documentation style
 
-* Added comprehensive BaseResponse<T> documentation with usage examples
-* Enhanced README with BaseResponse generic API wrapper section
-* Added detailed examples for handling API responses with type safety
-* Improved documentation structure and clarity
-* Updated examples to showcase BaseResponse benefits and use cases
+## 0.1.6 - 2025-08-15
+
+### Added
+- Comprehensive BaseResponse<T> documentation with usage examples
+- Detailed examples for handling API responses with type safety
+
+### Changed
+- Enhanced README with BaseResponse generic API wrapper section
+- Improved documentation structure and clarity
+- Updated examples to showcase BaseResponse benefits and use cases
 
 ## 0.1.5
 
