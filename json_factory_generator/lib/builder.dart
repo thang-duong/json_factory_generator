@@ -1,5 +1,5 @@
 import 'package:build/build.dart';
-import 'src/config_generator.dart';
+import 'package:json_factory_generator/src/json_factory_generator_helper.dart';
 
 /// Creates and configures the JsonFactory builder for code generation.
 ///
@@ -71,12 +71,7 @@ class JsonFactoryBuilder implements Builder {
         options.config['output_file_name'] as String? ?? 'json_factory';
     final outputPath = options.config['output_path'] as String? ?? 'lib';
 
-    final generator = JsonFactoryConfigGenerator(
-      outputFileName: outputFileName,
-      outputPath: outputPath,
-    );
-
-    final models = await generator.findAnnotatedModels(buildStep);
+    final models = await JsonFactoryGeneratorHelper.findAnnotatedModels(buildStep);
 
     if (models.isEmpty) {
       log.warning('No @jsonModel classes found');
@@ -85,7 +80,7 @@ class JsonFactoryBuilder implements Builder {
 
     // Get package name for generating package imports
     final packageName = buildStep.inputId.package;
-    final content = generator.generateFactoryFile(models, packageName);
+    final content = JsonFactoryGeneratorHelper.generateFactoryFile(models, packageName);
 
     // Use the configured output path and filename
     final outputFilePath = '$outputPath/$outputFileName.dart';
