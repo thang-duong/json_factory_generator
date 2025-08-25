@@ -1,3 +1,35 @@
+## 1.0.0 - 2025-08-25
+
+First stable release of the project, including both json_factory_annotation and json_factory_generator packages.
+
+### Added
+- Production-ready implementation with stability guarantees
+- Complete documentation for both packages
+- Comprehensive test coverage
+- Enhanced error handling and type safety
+- Support for complex object graphs and generic types
+- Refined BaseResponse<T> implementation
+- Advanced code generation features
+
+### Changed
+- Updated all dependencies to latest stable versions
+- Improved documentation structure
+- Enhanced build configuration
+- Better error messages and reporting
+
+### Migration
+- No breaking changes from 0.1.x series
+- All existing code will continue to work as expected
+- Improved backwards compatibility
+
+## 0.1.6 - 0.1.7
+
+* Enhanced BaseResponse<T> implementation with better type safety
+* Added unit tests for BaseResponse error handling
+* Improved documentation and examples 
+* Fixed code formatting and documentation style
+* Added API usage examples in README
+
 ## 0.1.6
 
 * Added comprehensive BaseResponse<T> documentation with usage examples

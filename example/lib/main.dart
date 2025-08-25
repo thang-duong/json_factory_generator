@@ -1,9 +1,17 @@
 import 'package:example/generated/json_factory.dart';
-
+import 'package:example/models/base_response.dart';
 import 'models/user.dart';
 import 'models/post.dart';
 
 void main() {
+  // Basic usage examples
+  demonstrateBasicUsage();
+  
+  // API response handling examples  
+  demonstrateApiResponseHandling();
+}
+
+void demonstrateBasicUsage() {
   // Example JSON data
   final userJson = {
     'id': 1,
@@ -34,4 +42,25 @@ void main() {
   for (final p in posts) {
     print('- ${p.title}: ${p.content}');
   }
+}
+
+void demonstrateApiResponseHandling() {
+  // Example API response
+  final apiResponse = {
+    'success': true,
+    'message': 'Data retrieved successfully',
+    'code': 200,
+    'data': {
+      'id': 1,
+      'name': 'John Doe'
+    }
+  };
+
+  // Parse API response with type safety
+  final response = JsonFactory.fromJson<BaseResponse<User>>(apiResponse);
+  
+  print('API Response:');
+  print('Success: ${response.success}');
+  print('Message: ${response.message}');
+  print('User: ${response.data?.name}');
 }

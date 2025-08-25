@@ -6,11 +6,15 @@ A powerful Dart code generator that creates centralized, type-safe JSON factorie
 [![Dart Version](https://badgen.net/pub/sdk-version/json_factory_generator)](https://pub.dev/packages/json_factory_generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Requirements
+
+- Dart SDK: >=3.5.2 <4.0.0
+
 ## Features
 
 - ✅ **Zero runtime initialization** - everything is compile-time generated
 - ✅ **Type-safe JSON parsing** - compile-time checking with proper generics  
-- ✅ **Auto-discovery** - automatically finds all `@jsonModel` classes with `fromJson` method
+- ✅ **Auto-discovery** - automatically finds all `@JsonModel` classes with `fromJson` method
 - ✅ **List support** - handles `List<T>` parsing with proper type casting
 - ✅ **Flexible** - works with manual `fromJson` or `json_serializable` generated methods
 - ✅ **No forced dependencies** - `json_serializable` is optional, not required
@@ -25,13 +29,14 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  json_factory_generator: ^0.1.4
+  json_factory_annotation: ^1.0.0
+  json_annotation: ^4.9.0  # Optional: if using json_serializable
 
 dev_dependencies:
-  build_runner: ^2.4.11
+  json_factory_generator: ^1.0.0
+  build_runner: ^2.7.0
   # Optional: if using json_serializable for code generation
-  json_annotation: ^4.9.0
-  json_serializable: ^6.9.0
+  json_serializable: ^6.10.0
 ```
 
 ## Setup
@@ -41,9 +46,9 @@ dev_dependencies:
 ### Option A: Manual fromJson (No dependencies)
 
 ```dart
-import 'package:json_factory_generator/json_factory_generator.dart';
+import 'package:json_factory_annotation/json_factory_annotation.dart';
 
-@jsonModel
+@JsonModel
 class User {
   final int id;
   final String name;
@@ -66,11 +71,11 @@ class User {
 
 ```dart
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_factory_generator/json_factory_generator.dart';
+import 'package:json_factory_annotation/json_factory_annotation.dart';
 
 part 'user.g.dart';
 
-@jsonModel
+@JsonModel
 @JsonSerializable()
 class User {
   final int id;
@@ -98,6 +103,36 @@ targets:
 ```
 
 ## Generate
+
+Run the following command to generate the JSON factory code:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+This will:
+1. Scan your project for classes annotated with `@JsonModel`
+2. Generate a centralized `json_factory.dart` file with type-safe parsing methods
+3. Place the generated file in your configured output directory (default: lib/generated)
+
+## Usage
+
+After generation, you can use the JsonFactory to parse JSON data:
+
+```dart
+import 'package:your_package/generated/json_factory.dart';
+
+// Parse a single object
+final json = {'id': 1, 'name': 'John'};
+final user = JsonFactory.fromJson<User>(json);
+
+// Parse a list of objects
+final jsonList = [
+  {'id': 1, 'name': 'John'},
+  {'id': 2, 'name': 'Jane'}
+];
+final users = JsonFactory.fromJsonList<User>(jsonList);
+```
 
 ```bash
 ```bash
