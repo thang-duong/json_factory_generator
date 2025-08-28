@@ -223,48 +223,45 @@ class DataConverter<T> implements JsonConverter<T?, Object?> {
 ### BaseResponse Usage Examples
 
 ```dart
-// Single user response
-final userResponse = BaseResponse<User>.fromJson(
-  {
-    "success": true,
-    "message": "User fetched successfully", 
-    "data": {"id": 1, "name": "John Doe"},
-    "code": 200
-  },
-  (json) => User.fromJson(json as Map<String, dynamic>),
-);
+// Example API response for single object
+final apiResponse = {
+  'success': true,
+  'message': 'Data retrieved successfully',
+  'code': 200,
+  'data': {
+    'id': 1,
+    'name': 'John Doe'
+  }
+};
 
-// List of posts response
-final postsResponse = BaseResponse<List<Post>>.fromJson(
-  {
-    "success": true,
-    "message": "Posts retrieved",
-    "data": [
-      {"id": 1, "title": "First Post", "content": "Content 1"},
-      {"id": 2, "title": "Second Post", "content": "Content 2"}
-    ],
-    "code": 200
-  },
-  (json) => (json as List).map((item) => Post.fromJson(item)).toList(),
-);
+// Parse API response with type safety
+final response = BaseResponse<User?>.fromJson(apiResponse, JsonFactory.fromJson);
+  
+print('API Response:');
+print('Success: ${response.success}');
+print('Message: ${response.message}');
+print('User: ${response.data?.name}');
 
-// Error response
-final errorResponse = BaseResponse<User?>.fromJson(
-  {
-    "success": false,
-    "message": "User not found",
-    "data": null,
-    "code": 404
-  },
-  (json) => json != null ? User.fromJson(json as Map<String, dynamic>) : null,
-);
+// Example with list response
+final apiListResponse = {
+  'success': true,
+  'message': 'Posts retrieved successfully',
+  'code': 200,
+  'data': [
+    {'id': 1, 'title': 'Post 1', 'content': 'Content 1'},
+    {'id': 2, 'title': 'Post 2', 'content': 'Content 2'},
+  ]
+};
 
-// Access response data
-if (userResponse.success) {
-  print('User: ${userResponse.data?.name}');
-} else {
-  print('Error: ${userResponse.message}');
-}
+// Parse API list response with type safety
+final listResponse = BaseResponse<List<Post>>.fromJson(apiListResponse, JsonFactory.fromJson);
+print('API List Response:');
+print('Success: ${listResponse.success}');
+print('Message: ${listResponse.message}');
+print('Posts:');
+listResponse.data?.forEach((post) {
+  print('- ${post.title}: ${post.content}');
+});
 ```
 
 ### BaseResponse Benefits

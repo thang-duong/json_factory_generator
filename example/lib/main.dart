@@ -57,10 +57,31 @@ void demonstrateApiResponseHandling() {
   };
 
   // Parse API response with type safety
-  final response = JsonFactory.fromJson<BaseResponse<User>>(apiResponse);
+  final response = BaseResponse<User?>.fromJson(apiResponse, JsonFactory.fromJson);
   
   print('API Response:');
   print('Success: ${response.success}');
   print('Message: ${response.message}');
   print('User: ${response.data?.name}');
+
+  // Example with list
+  final apiListResponse = {
+    'success': true,
+    'message': 'Posts retrieved successfully',
+    'code': 200,
+    'data': [
+      {'id': 1, 'title': 'Post 1', 'content': 'Content 1'},
+      {'id': 2, 'title': 'Post 2', 'content': 'Content 2'},
+    ]
+  };
+
+  // Parse API list response with type safety
+  final listResponse = BaseResponse<List<Post>>.fromJson(apiListResponse, JsonFactory.fromJson);
+  print('API List Response:');
+  print('Success: ${listResponse.success}');
+  print('Message: ${listResponse.message}');
+  print('Posts:');
+  listResponse.data?.forEach((post) {
+    print('- ${post.title}: ${post.content}');
+  });
 }
