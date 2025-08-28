@@ -1,3 +1,11 @@
+## 1.0.2 - 2025-08-28
+
+### Changed
+
+- Updated BaseResponse usage examples with clearer examples
+- Enhanced documentation clarity for type-safe JSON parsing
+- Improved code examples in README
+
 ## 1.0.1 - 2025-08-25
 
 ### Changed

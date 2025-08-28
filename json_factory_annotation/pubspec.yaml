@@ -2,7 +2,7 @@ name: json_factory_annotation
 # Centralized, type-safe JSON factory annotation for Dart models
 # -------------------------------------------------------------
 description: Annotation for centralized, type-safe JSON factory generation in Dart models. Supports generic API responses and complex object graphs.
-version: 1.0.1
+version: 1.0.2
 homepage: https://pub.dev/packages/json_factory_annotation
 repository: https://github.com/thang-duong/json_factory_generator
 # Documentation: https://github.com/thang-duong/json_factory_generator/blob/main/README.md
