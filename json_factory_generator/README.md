@@ -223,47 +223,49 @@ class DataConverter<T> implements JsonConverter<T?, Object?> {
 ### BaseResponse Usage Examples
 
 ```dart
-// Single user response
-final userResponse = BaseResponse<User>.fromJson(
-  {
-    "success": true,
-    "message": "User fetched successfully", 
-    "data": {"id": 1, "name": "John Doe"},
-    "code": 200
-  },
-  (json) => User.fromJson(json as Map<String, dynamic>),
-);
+// Example API response for single object
+final userResponse = {
+  'success': true,
+  'message': 'Data retrieved successfully',
+  'code': 200,
+  'data': {
+    'id': 1,
+    'name': 'John Doe'
+  }
+};
 
-// List of posts response
-final postsResponse = BaseResponse<List<Post>>.fromJson(
-  {
-    "success": true,
-    "message": "Posts retrieved",
-    "data": [
-      {"id": 1, "title": "First Post", "content": "Content 1"},
-      {"id": 2, "title": "Second Post", "content": "Content 2"}
-    ],
-    "code": 200
-  },
-  (json) => (json as List).map((item) => Post.fromJson(item)).toList(),
-);
+// Parse single object response with type safety
+final response = JsonFactory.fromJson<BaseResponse<User>>(userResponse);
 
-// Error response
-final errorResponse = BaseResponse<User?>.fromJson(
-  {
-    "success": false,
-    "message": "User not found",
-    "data": null,
-    "code": 404
-  },
-  (json) => json != null ? User.fromJson(json as Map<String, dynamic>) : null,
-);
-
-// Access response data
-if (userResponse.success) {
-  print('User: ${userResponse.data?.name}');
+// Access single object data
+if (response.success) {
+  print('User: ${response.data?.name}'); // John Doe
 } else {
-  print('Error: ${userResponse.message}');
+  print('Error: ${response.message}');
+}
+
+// Example API response for list of objects
+final usersResponse = {
+  'success': true,
+  'message': 'Data retrieved successfully',
+  'code': 200,
+  'data': [
+    {'id': 1, 'name': 'John Doe'},
+    {'id': 2, 'name': 'Jane Smith'},
+    {'id': 3, 'name': 'Bob Johnson'}
+  ]
+};
+
+// Parse list response with type safety
+final listResponse = JsonFactory.fromJson<BaseResponse<List<User>>>(usersResponse);
+
+// Access list data
+if (listResponse.success) {
+  for (final user in listResponse.data ?? []) {
+    print('User: ${user.name}');
+  }
+} else {
+  print('Error: ${listResponse.message}');
 }
 ```
 
