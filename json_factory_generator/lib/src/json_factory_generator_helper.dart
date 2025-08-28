@@ -134,14 +134,27 @@ class JsonFactoryGeneratorHelper {
   static String generateFactoryContent(List<ModelInfo> models) {
     final buffer = StringBuffer();
 
-    buffer.writeln('/// Auto-generated JsonFactory for type-safe JSON parsing');
-    buffer.writeln('/// ');
-    buffer.writeln('/// This class provides centralized, type-safe JSON parsing for all');
-    buffer.writeln('/// model classes annotated with @jsonModel and @JsonSerializable.');
-    buffer.writeln('/// ');
-    buffer.writeln('/// Usage:');
+    buffer.writeln('/// Auto-generated JsonFactory for type-safe JSON parsing in Flutter/Dart');
+    buffer.writeln('///');
+    buffer.writeln('/// A centralized factory for parsing JSON data into strongly-typed Dart objects.');
+    buffer.writeln('/// Works with any model class annotated with @jsonModel and @JsonSerializable.');
+    buffer.writeln('///');
+    buffer.writeln('/// Features:');
+    buffer.writeln('/// - Type-safe JSON parsing for models and lists of models');
+    buffer.writeln('/// - Automatic null-safety handling');
+    buffer.writeln('/// - Support for generic types and collections');
+    buffer.writeln('/// - Built-in error handling with clear messages');
+    buffer.writeln('///');
+    buffer.writeln('/// Usage examples:');
+    buffer.writeln('///   // Parse a single object');
     buffer.writeln('///   final user = JsonFactory.fromJson<User>(jsonMap);');
+    buffer.writeln('///   ');
+    buffer.writeln('///   // Parse a list of objects');
     buffer.writeln('///   final users = JsonFactory.fromJson<List<User>>(jsonList);');
+    buffer.writeln('///   ');
+    buffer.writeln('///   // Handle nullable types');
+    buffer.writeln('///   final userOrNull = JsonFactory.fromJson<User?>(maybeNull);');
+    buffer.writeln('///   final usersOrNull = JsonFactory.fromJson<List<User>?>(maybeNull);');
     buffer.writeln('class JsonFactory {');
 
     // Generate _factories map
@@ -156,8 +169,25 @@ class JsonFactoryGeneratorHelper {
     // Generate methods
     _generateMethods(buffer);
 
-    buffer.writeln('}');
-    buffer.writeln();
+    // Generate helper methods
+    buffer.writeln('  // -----------------------------');
+    buffer.writeln('  // Helpers');
+    buffer.writeln('  // -----------------------------\n');
+    
+    buffer.writeln('  /// Returns true if generic T is a nullable type (ends with \'?\').');
+    buffer.writeln('  static bool _isNullableT<T>() {');
+    buffer.writeln('    final s = _typeNameOf<T>();');
+    buffer.writeln('    return s.endsWith(\'?\');');
+    buffer.writeln('  }\n');
+
+    buffer.writeln('  /// Returns T\'s name as string (e.g., "User", "User?", "List<User>", "List<User>?")');
+    buffer.writeln('  static String _typeNameOf<T>() => T.toString();\n');
+
+    buffer.writeln('  /// Strips a single trailing \'?\' (nullability) from a type name string.');
+    buffer.writeln('  static String _stripNullability(String typeName) =>');
+    buffer.writeln('      typeName.endsWith(\'?\') ? typeName.substring(0, typeName.length - 1) : typeName;');
+    buffer.writeln('}\n');
+
     buffer.writeln('/// Type definition for JSON factory functions.');
     buffer.writeln('/// ');
     buffer.writeln('/// Each registered model type has a corresponding factory function');
@@ -169,8 +199,9 @@ class JsonFactoryGeneratorHelper {
 
   /// Generates the _factories map content
   static void _generateFactoriesMap(StringBuffer buffer, List<ModelInfo> models) {
-    buffer.writeln('  /// Internal map of Type to JSON parsing functions.');
-    buffer.writeln('  /// Each entry maps a model class Type to its fromJson factory method.');
+    buffer.writeln('  /// Maps Dart Types to their corresponding JSON parsing functions.');
+    buffer.writeln('  /// Key: The Dart Type (e.g., User, Post)');
+    buffer.writeln('  /// Value: A function that converts JSON data to that Type');
     buffer.writeln('  static final Map<Type, FromJsonFunc> _factories = {');
     for (final model in models) {
       buffer.writeln('    ${model.name}: (json) => '
@@ -183,7 +214,7 @@ class JsonFactoryGeneratorHelper {
   /// Generates the _typeMap content
   static void _generateTypeMap(StringBuffer buffer, List<ModelInfo> models) {
     buffer.writeln('  /// Internal map of string type names to actual Dart Types.');
-    buffer.writeln('  /// Used for resolving generic types like List<User> at runtime.');
+    buffer.writeln('  /// Note: keys are non-nullable simple names (no \'?\', no generics)');
     buffer.writeln('  static final Map<String, Type> _typeMap = {');
     for (final model in models) {
       buffer.writeln('    \'${model.name}\': ${model.name},');
@@ -194,13 +225,9 @@ class JsonFactoryGeneratorHelper {
 
   /// Generates the _listCasters map content
   static void _generateListCasters(StringBuffer buffer, List<ModelInfo> models) {
-    buffer.writeln('  /// Generated list casters for safe List<T> type conversion.');
-    buffer.writeln('  /// ');
-    buffer.writeln('  /// When parsing List<ModelType>, we first parse each JSON object into');
-    buffer.writeln('  /// model instances (creating List<dynamic>), then use these casters');
-    buffer.writeln('  /// to safely convert to List<ModelType> with proper generic typing.');
-    buffer.writeln('  /// ');
-    buffer.writeln('  /// This avoids runtime type errors and provides compile-time safety.');
+    buffer.writeln('  /// Type-safe casting functions for converting lists of dynamic to strongly-typed lists.');
+    buffer.writeln('  /// Key: The element Type (e.g., User for List<User>)');
+    buffer.writeln('  /// Value: A function that safely casts a List<dynamic> to List<T>');
     buffer.writeln('  static final Map<Type, List<dynamic> Function(List<dynamic>)> _listCasters = {');
     for (final model in models) {
       buffer.writeln('    ${model.name}: (list) => list.cast<${model.name}>().toList(),');
@@ -219,18 +246,24 @@ class JsonFactoryGeneratorHelper {
   static void _generateFromJson(StringBuffer buffer) {
     buffer.writeln('''
   /// Converts JSON data to the specified type T
-  /// Supports both single objects and lists
+  /// Supports both single objects and lists, with nullable T handling.
   static T fromJson<T>(dynamic json) {
+    // If incoming JSON is null:
+    // - If T is nullable (e.g. User?, List<User>?), return null as T
+    // - Else, throw a clear error
     if (json == null) {
-      throw ArgumentError('JSON data is null for type \$T');
+      if (_isNullableT<T>()) {
+        return null as T; // safe because T is nullable
+      }
+      throw ArgumentError('JSON data is null for non-nullable type \$T');
     }
 
-    // Handle List<T>
+    // If it's a list, handle as List<Inner>
     if (json is List) {
       return _handleListType<T>(json);
     }
 
-    // Handle single object
+    // Else expect a single object (Map)
     return _handleSingleType<T>(json);
   }
 ''');
@@ -240,39 +273,42 @@ class JsonFactoryGeneratorHelper {
   static void _generateHandleListType(StringBuffer buffer) {
     buffer.writeln('''
   /// Handles conversion of `List<Inner>` types.
-  /// Example: when `T` is `List<Post>`, this will:
-  /// 1) parse each JSON item using the registered factory for `Post`,
-  /// 2) cast the result to `List<Post>` via a generated caster,
-  /// 3) return it as `T`.
+  /// Example: when `T` is `List<Post>` or `List<Post>?`.
   static T _handleListType<T>(List json) {
-    final typeStr = T.toString();
-    // If T isn't a List<...>, just return the original list as-is.
-    if (!typeStr.startsWith('List<') || !typeStr.endsWith('>')) {
+    final typeStr = _typeNameOf<T>();
+    final bareTypeStr = _stripNullability(typeStr); // e.g. "List<User>"
+
+    // If T isn't List<...>, just return as-is (caller asked for raw list)
+    if (!bareTypeStr.startsWith('List<') || !bareTypeStr.endsWith('>')) {
       return json as T;
     }
 
-    // Extract inner type name, e.g. "Post" from "List<Post>".
-    final innerTypeName = typeStr.substring(5, typeStr.length - 1);
+    // Extract inner type name: "User" from "List<User>"
+    final innerTypeName = bareTypeStr.substring(5, bareTypeStr.length - 1);
 
-    // Look up the actual Dart Type from the generated type map.
-    final dartType = _typeMap[innerTypeName];
-    if (dartType == null) {
-      throw ArgumentError('Unknown type \$innerTypeName in List<\$innerTypeName>');
+    // Map to the Dart Type of inner model
+    final innerDartType = _typeMap[innerTypeName];
+    if (innerDartType == null) {
+      throw ArgumentError('Unknown inner type \$innerTypeName in \$typeStr');
     }
 
-    // Step 1: Map raw JSON to model instances using the correct factory.
-    final factory = _factories[dartType]!;
+    // 1) Parse each JSON item using the registered factory for Inner
+    final factory = _factories[innerDartType];
+    if (factory == null) {
+      throw ArgumentError(
+          'No factory registered for inner type \$innerTypeName in \$typeStr');
+    }
     final rawList = json.map((e) => factory(e)).toList(); // List<dynamic>
 
-    // Step 2: Cast to a strongly-typed List<Inner> using a generated caster.
-    final caster = _listCasters[dartType];
+    // 2) Cast to strongly-typed List<Inner> using a generated caster
+    final caster = _listCasters[innerDartType];
     if (caster != null) {
       final typedList = caster(rawList); // List<Inner>
-      // Step 3: Return as T (where T == List<Inner>).
+      // 3) Return as T (where T == List<Inner> or List<Inner>?)
       return typedList as T;
     }
 
-    // Fallback: return the dynamic list if no caster is available.
+    // Fallback: return dynamic list if no caster available
     return rawList as T;
   }
 ''');
@@ -281,16 +317,23 @@ class JsonFactoryGeneratorHelper {
   /// Generates _handleSingleType method
   static void _generateHandleSingleType(StringBuffer buffer) {
     buffer.writeln('''
-  /// Handles conversion of single object types
+  /// Handles conversion of single object types (e.g., `User` or `User?`).
   static T _handleSingleType<T>(dynamic json) {
     if (json is! Map<String, dynamic>) {
       throw ArgumentError(
-          'Expected JSON object for type \$T, got \${json.runtimeType}');
+        'Expected JSON object (Map) for type \$T, got \${json.runtimeType}',
+      );
     }
 
-    final factory = _factories[T];
+    final typeStr = _stripNullability(_typeNameOf<T>()); // e.g. "User"
+    final dartType = _typeMap[typeStr];
+    if (dartType == null) {
+      throw ArgumentError('Unknown or unregistered type \$typeStr for \$T');
+    }
+
+    final factory = _factories[dartType];
     if (factory == null) {
-      throw ArgumentError('No factory registered for type \$T');
+      throw ArgumentError('No factory registered for type \$typeStr');
     }
 
     return factory(json) as T;

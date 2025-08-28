@@ -224,7 +224,7 @@ class DataConverter<T> implements JsonConverter<T?, Object?> {
 
 ```dart
 // Example API response for single object
-final userResponse = {
+final apiResponse = {
   'success': true,
   'message': 'Data retrieved successfully',
   'code': 200,
@@ -234,39 +234,34 @@ final userResponse = {
   }
 };
 
-// Parse single object response with type safety
-final response = JsonFactory.fromJson<BaseResponse<User>>(userResponse);
+// Parse API response with type safety
+final response = BaseResponse<User?>.fromJson(apiResponse, JsonFactory.fromJson);
+  
+print('API Response:');
+print('Success: ${response.success}');
+print('Message: ${response.message}');
+print('User: ${response.data?.name}');
 
-// Access single object data
-if (response.success) {
-  print('User: ${response.data?.name}'); // John Doe
-} else {
-  print('Error: ${response.message}');
-}
-
-// Example API response for list of objects
-final usersResponse = {
+// Example with list response
+final apiListResponse = {
   'success': true,
-  'message': 'Data retrieved successfully',
+  'message': 'Posts retrieved successfully',
   'code': 200,
   'data': [
-    {'id': 1, 'name': 'John Doe'},
-    {'id': 2, 'name': 'Jane Smith'},
-    {'id': 3, 'name': 'Bob Johnson'}
+    {'id': 1, 'title': 'Post 1', 'content': 'Content 1'},
+    {'id': 2, 'title': 'Post 2', 'content': 'Content 2'},
   ]
 };
 
-// Parse list response with type safety
-final listResponse = JsonFactory.fromJson<BaseResponse<List<User>>>(usersResponse);
-
-// Access list data
-if (listResponse.success) {
-  for (final user in listResponse.data ?? []) {
-    print('User: ${user.name}');
-  }
-} else {
-  print('Error: ${listResponse.message}');
-}
+// Parse API list response with type safety
+final listResponse = BaseResponse<List<Post>>.fromJson(apiListResponse, JsonFactory.fromJson);
+print('API List Response:');
+print('Success: ${listResponse.success}');
+print('Message: ${listResponse.message}');
+print('Posts:');
+listResponse.data?.forEach((post) {
+  print('- ${post.title}: ${post.content}');
+});
 ```
 
 ### BaseResponse Benefits
