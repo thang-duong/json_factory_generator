@@ -1,3 +1,15 @@
+## 1.1.0 - 2026-04-30
+
+### Added
+
+- Added standalone CLI generation mode (`generate`) that can produce `json_factory.dart` without running full `build_runner` pipelines.
+- Added executable alias `flutterjfg` for shorter commands.
+
+### Changed
+
+- Default CLI command now maps to `build` and runs `build_runner build --delete-conflicting-outputs`.
+- Updated README with new CLI workflows, alias usage, and command examples.
+
 ## 1.0.2 - 2025-08-28
 
 ### Changed

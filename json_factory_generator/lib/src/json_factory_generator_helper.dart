@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:json_factory_annotation/json_factory_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -53,10 +53,10 @@ class JsonFactoryGeneratorHelper {
   }
 
   /// Checks if a class has a fromJson factory constructor.
-  static bool hasFromJsonConstructor(ClassElement2 classElement) {
-    for (final constructor in classElement.constructors2) {
-      if (constructor.isFactory && constructor.name3 == 'fromJson') {
-        log.info('_hasFromJsonConstructor: ${constructor.name3}');
+  static bool hasFromJsonConstructor(ClassElement classElement) {
+    for (final constructor in classElement.constructors) {
+      if (constructor.isFactory && constructor.name == 'fromJson') {
+        log.info('_hasFromJsonConstructor: ${constructor.name}');
 
         if (constructor.formalParameters.length == 1) {
           final parameter = constructor.formalParameters.first;
@@ -74,7 +74,7 @@ class JsonFactoryGeneratorHelper {
   }
 
   /// Checks if a class has the required annotation and method to be a model.
-  static bool isValidModelClass(ClassElement2 classElement) {
+  static bool isValidModelClass(ClassElement classElement) {
     final hasJsonModel =
         TypeChecker.typeNamed(JsonModel).hasAnnotationOfExact(classElement);
 
@@ -93,7 +93,8 @@ class JsonFactoryGeneratorHelper {
 
     for (final classElement in libraryReader.classes) {
       if (isValidModelClass(classElement)) {
-        final className = classElement.name3.toString();
+        final className = classElement.name;
+        if (className == null) continue;
         log.info('Found model class: $className');
         models.add(
           ModelInfo(

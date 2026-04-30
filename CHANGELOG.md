@@ -1,3 +1,10 @@
+## 1.1.0 - 2026-04-30
+
+### Changed
+- Added and documented a dedicated CLI flow for generator usage.
+- Added `flutterjfg` executable alias for shorter commands.
+- Updated command docs to clarify default CLI behavior and build_runner passthrough mode.
+
 ## 1.0.1 - 2025-08-25
 
 ### Changed

@@ -33,7 +33,7 @@ dependencies:
   json_annotation: ^4.9.0  # Optional: if using json_serializable
 
 dev_dependencies:
-  json_factory_generator: ^1.0.0
+  json_factory_generator: ^1.1.0
   build_runner: ^2.7.0
   # Optional: if using json_serializable for code generation
   json_serializable: ^6.10.0
@@ -103,6 +103,45 @@ targets:
 ```
 
 ## Generate
+
+### Preferred: use the package CLI
+
+```bash
+dart run json_factory_generator
+```
+
+The default command is `build`, which runs `build_runner build` with
+`--delete-conflicting-outputs`.
+
+If you want a short global command:
+
+```bash
+dart pub global activate json_factory_generator
+flutterjfg
+```
+
+You can customize output path/file:
+
+```bash
+dart run json_factory_generator generate --output-path lib/generated --output-file-name json_factory
+```
+
+Other commands:
+
+```bash
+dart run json_factory_generator build
+dart run json_factory_generator watch
+dart run json_factory_generator clean
+```
+
+Standalone generation mode (no full build_runner pipeline):
+
+```bash
+dart run json_factory_generator generate
+dart run json_factory_generator generate --output-path lib/generated --output-file-name json_factory
+```
+
+For `build/watch/clean`, unknown options are passed through to `build_runner`.
 
 Run the following command to generate the JSON factory code:
 
