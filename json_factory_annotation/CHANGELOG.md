@@ -1,3 +1,8 @@
+## 1.1.0 - 2026-04-30
+
+ - **FEAT**: add melos release workspace and bump package versions. ([75f9e796](https://github.com/thang-duong/json_factory_generator/commit/75f9e796aabfb6f7a1851c18b883f04d2f7da476))
+ - **FEAT**: introduce standalone CLI generation mode and executable alias for json_factory_generator. ([09211542](https://github.com/thang-duong/json_factory_generator/commit/092115421895f7a12a9df8fa2be162366b07081b))
+
 ## 1.0.3 - 2026-04-30
 
 ### Changed

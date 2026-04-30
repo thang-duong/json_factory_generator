@@ -1,3 +1,39 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 2026-04-30
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`json_factory_annotation` - `v1.1.0`](#json_factory_annotation---v110)
+ - [`json_factory_generator` - `v1.2.0`](#json_factory_generator---v120)
+
+---
+
+#### `json_factory_annotation` - `v1.1.0`
+
+ - **FEAT**: add melos release workspace and bump package versions. ([75f9e796](https://github.com/thang-duong/json_factory_generator/commit/75f9e796aabfb6f7a1851c18b883f04d2f7da476))
+ - **FEAT**: introduce standalone CLI generation mode and executable alias for json_factory_generator. ([09211542](https://github.com/thang-duong/json_factory_generator/commit/092115421895f7a12a9df8fa2be162366b07081b))
+
+#### `json_factory_generator` - `v1.2.0`
+
+ - **FEAT**: add melos release workspace and bump package versions. ([75f9e796](https://github.com/thang-duong/json_factory_generator/commit/75f9e796aabfb6f7a1851c18b883f04d2f7da476))
+ - **FEAT**: introduce standalone CLI generation mode and executable alias for json_factory_generator. ([09211542](https://github.com/thang-duong/json_factory_generator/commit/092115421895f7a12a9df8fa2be162366b07081b))
+ - **DOCS**: update README and examples for BaseResponse usage and type safety. ([78d8337c](https://github.com/thang-duong/json_factory_generator/commit/78d8337cfbec3aa4a950f95be08ddd2998a1e86e))
+ - **DOCS**: update BaseResponse usage examples. ([95da1632](https://github.com/thang-duong/json_factory_generator/commit/95da163234034bcc0f22d2ebd6f433433a4ef901))
+ - **DOCS**: update CHANGELOG with enhancements to BaseResponse examples and documentation clarity. ([8ed30161](https://github.com/thang-duong/json_factory_generator/commit/8ed30161a5efab2361199354a87f877f9d0ed849))
+ - **DOCS**: update README with examples for BaseResponse usage and type safety. ([f8e4ad46](https://github.com/thang-duong/json_factory_generator/commit/f8e4ad46c30768796c2ce6d1cff171a8d05957cf))
+
 ## 1.1.1 - 2026-04-30
 
 ### Changed
