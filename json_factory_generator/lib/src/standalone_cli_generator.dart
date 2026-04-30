@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:yaml/yaml.dart';
 
 import 'json_factory_generator_helper.dart';
 
 class StandaloneCliGenerator {
   static Future<int> run({
     required String projectRoot,
-    required String outputPath,
-    required String outputFileName,
+    String? outputPath,
+    String? outputFileName,
     required bool verbose,
   }) async {
     final rootDir = Directory(projectRoot);
@@ -42,20 +43,59 @@ class StandaloneCliGenerator {
       packageName,
     );
 
-    final normalizedOutputPath = _normalizeOutputPath(outputPath);
+    final buildOptions = await _readBuildOptions(projectRoot);
+    final resolvedOutputPath =
+        outputPath ?? buildOptions.outputPath ?? 'lib/generated';
+    final resolvedOutputFileName =
+        outputFileName ?? buildOptions.outputFileName ?? 'json_factory';
+
+    final normalizedOutputPath = _normalizeOutputPath(resolvedOutputPath);
     final outputDir = Directory('$projectRoot/$normalizedOutputPath');
     if (!await outputDir.exists()) {
       await outputDir.create(recursive: true);
     }
 
     final outputFile = File(
-      '$projectRoot/$normalizedOutputPath/$outputFileName.dart',
+      '$projectRoot/$normalizedOutputPath/$resolvedOutputFileName.dart',
     );
     await outputFile.writeAsString(content);
 
     stdout.writeln('Generated: ${outputFile.path}');
     stdout.writeln('Models: ${models.length}');
     return 0;
+  }
+
+  static Future<_BuildOptions> _readBuildOptions(String projectRoot) async {
+    final buildYaml = File('$projectRoot/build.yaml');
+    if (!await buildYaml.exists()) return const _BuildOptions();
+
+    try {
+      final content = await buildYaml.readAsString();
+      final root = loadYaml(content);
+      if (root is! YamlMap) return const _BuildOptions();
+
+      final targets = root['targets'];
+      if (targets is! YamlMap) return const _BuildOptions();
+
+      final defaultTarget = targets[r'$default'];
+      if (defaultTarget is! YamlMap) return const _BuildOptions();
+
+      final builders = defaultTarget['builders'];
+      if (builders is! YamlMap) return const _BuildOptions();
+
+      final builderConfig = builders['json_factory_generator:jsonFactoryBuilder'];
+      if (builderConfig is! YamlMap) return const _BuildOptions();
+
+      final options = builderConfig['options'];
+      if (options is! YamlMap) return const _BuildOptions();
+
+      return _BuildOptions(
+        outputPath: options['output_path']?.toString(),
+        outputFileName: options['output_file_name']?.toString(),
+      );
+    } catch (_) {
+      return const _BuildOptions();
+    }
   }
 
   static Future<String?> _readPackageName(String projectRoot) async {
@@ -166,4 +206,14 @@ class StandaloneCliGenerator {
         ? trimmed.substring(0, trimmed.length - 1)
         : trimmed;
   }
+}
+
+class _BuildOptions {
+  final String? outputPath;
+  final String? outputFileName;
+
+  const _BuildOptions({
+    this.outputPath,
+    this.outputFileName,
+  });
 }

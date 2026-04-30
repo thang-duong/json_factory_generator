@@ -1,0 +1,45 @@
+name: json_factory_generator_workspace
+publish_to: none
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+workspace:
+  - json_factory_generator
+  - json_factory_annotation
+  - example
+
+dev_dependencies:
+  melos: ^7.1.0
+
+melos:
+  repository: https://github.com/thang-duong/json_factory_generator
+  scripts:
+    analyze:
+      run: melos exec -- "dart analyze"
+      description: Run static analysis for all workspace packages.
+    test:
+      run: melos exec --dir-exists=test -- "dart test"
+      description: Run tests in all packages that contain tests.
+    generate:example:
+      run: melos exec --scope=example -- "dart run json_factory_generator build"
+      description: Generate example outputs through the package CLI.
+    release:version:
+      run: melos version --yes --no-private
+      description: Version packages and update changelogs/tags.
+    release:publish:
+      run: melos publish --yes --no-dry-run --no-private
+      description: Publish releasable packages to pub.dev.
+  command:
+    bootstrap:
+      runPubGetInParallel: true
+    version:
+      branch: main
+      workspaceChangelog: true
+      updateGitTagRefs: true
+      changelogFormat:
+        includeDate: true
+      message: |
+        chore(release): publish packages
+
+        {new_package_versions}

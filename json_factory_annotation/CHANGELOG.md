@@ -1,3 +1,10 @@
+## 1.0.3 - 2026-04-30
+
+### Changed
+
+- Updated workspace compatibility (`resolution: workspace`) for Melos-based release flow.
+- Updated lint configuration to align with workspace toolchain.
+
 ## 1.0.2 - 2025-08-28
 
 ### Changed

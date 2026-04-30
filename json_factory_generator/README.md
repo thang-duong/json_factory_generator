@@ -141,6 +141,9 @@ dart run json_factory_generator generate
 dart run json_factory_generator generate --output-path lib/generated --output-file-name json_factory
 ```
 
+When `generate` runs without `--output-path` / `--output-file-name`, it reads
+`build.yaml` builder options first and falls back to `lib/generated/json_factory.dart`.
+
 For `build/watch/clean`, unknown options are passed through to `build_runner`.
 
 Run the following command to generate the JSON factory code:

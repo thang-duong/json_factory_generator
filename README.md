@@ -141,6 +141,9 @@ dart run json_factory_generator generate
 dart run json_factory_generator generate --output-path lib/generated --output-file-name json_factory
 ```
 
+When `generate` runs without `--output-path` / `--output-file-name`, it reads
+`build.yaml` builder options first and falls back to `lib/generated/json_factory.dart`.
+
 For `build/watch/clean`, unknown options are passed through to `build_runner`.
 
 Run the following command to generate the JSON factory code:
@@ -372,6 +375,30 @@ dart run build_runner build --delete-conflicting-outputs
 # Watch for changes (development)
 dart run build_runner watch
 ```
+
+## Melos Workspace & Auto Release
+
+This repository is configured as a Melos workspace for multi-package release automation.
+
+### Setup
+
+```bash
+dart pub get
+dart run melos bootstrap
+```
+
+### Useful workspace commands
+
+```bash
+dart run melos run analyze
+dart run melos run test
+dart run melos run generate:example
+```
+
+### Release flow
+
+- Versioning/changelog/tagging: `dart run melos run release:version`
+- Publish to pub.dev: `dart run melos run release:publish`
 
 ## Contributing
 

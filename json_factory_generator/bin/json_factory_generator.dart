@@ -24,10 +24,8 @@ Future<void> main(List<String> args) async {
 
   final verbose = args.contains('--verbose') || args.contains('-v');
   if (command == 'generate') {
-    final outputPath =
-        _readOptionValue(args, '--output-path') ?? 'lib/generated';
-    final outputFileName =
-        _readOptionValue(args, '--output-file-name') ?? 'json_factory';
+    final outputPath = _readOptionValue(args, '--output-path');
+    final outputFileName = _readOptionValue(args, '--output-file-name');
 
     final code = await StandaloneCliGenerator.run(
       projectRoot: Directory.current.path,

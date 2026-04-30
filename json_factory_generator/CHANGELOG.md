@@ -1,3 +1,15 @@
+## 1.1.1 - 2026-04-30
+
+### Added
+
+- Standalone `generate` mode now reads `build.yaml` options when CLI params are omitted.
+- Added Melos workspace support at repository root for release automation scripts.
+
+### Changed
+
+- Added `flutterjfg` short executable alias and updated CLI command docs.
+- Default CLI behavior remains `build` with `--delete-conflicting-outputs`.
+
 ## 1.1.0 - 2026-04-30
 
 ### Added

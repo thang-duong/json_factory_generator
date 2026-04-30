@@ -1,3 +1,9 @@
+## 1.1.1 - 2026-04-30
+
+### Changed
+- Added Melos workspace configuration and release scripts at repository root.
+- Added standalone CLI generation improvements and alias/documentation updates.
+
 ## 1.1.0 - 2026-04-30
 
 ### Changed
