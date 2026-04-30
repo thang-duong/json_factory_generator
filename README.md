@@ -8,7 +8,7 @@ A powerful Dart code generator that creates centralized, type-safe JSON factorie
 
 ## Requirements
 
-- Dart SDK: >=3.5.2 <4.0.0
+- Dart SDK: >=3.10.0 <4.0.0
 
 ## Features
 
@@ -29,11 +29,11 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  json_factory_annotation: ^1.0.0
+  json_factory_annotation: ^1.2.0
   json_annotation: ^4.9.0  # Optional: if using json_serializable
 
 dev_dependencies:
-  json_factory_generator: ^1.1.0
+  json_factory_generator: ^1.3.0
   build_runner: ^2.7.0
   # Optional: if using json_serializable for code generation
   json_serializable: ^6.10.0

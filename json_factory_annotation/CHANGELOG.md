@@ -1,3 +1,10 @@
+## 1.2.0 - 2026-04-30
+
+### Changed
+
+- Raised minimum Dart SDK constraint to `>=3.10.0 <4.0.0`.
+- Updated README installation examples to current package versions.
+
 ## 1.1.0 - 2026-04-30
 
  - **FEAT**: add melos release workspace and bump package versions. ([75f9e796](https://github.com/thang-duong/json_factory_generator/commit/75f9e796aabfb6f7a1851c18b883f04d2f7da476))

@@ -84,7 +84,7 @@ void main() {
         throwsA(isA<ArgumentError>().having(
           (error) => error.message,
           'message',
-          'No factory registered for type UnregisteredType',
+          contains('Unknown or unregistered type UnregisteredType'),
         )),
       );
     });
@@ -96,7 +96,7 @@ void main() {
         throwsA(isA<ArgumentError>().having(
           (error) => error.message,
           'message',
-          contains('Expected JSON object for type User'),
+          contains('Expected JSON object (Map) for type User'),
         )),
       );
     });

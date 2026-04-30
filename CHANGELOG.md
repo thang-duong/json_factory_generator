@@ -15,6 +15,30 @@ Packages with breaking changes:
 
 Packages with other changes:
 
+ - `json_factory_annotation` `v1.2.0`
+ - `json_factory_generator` `v1.3.0`
+
+---
+
+#### `json_factory_annotation` - `v1.2.0`
+
+ - **CHANGED**: raise Dart SDK constraint to `>=3.10.0 <4.0.0` and refresh README version examples.
+
+#### `json_factory_generator` - `v1.3.0`
+
+ - **CHANGED**: raise Dart SDK constraint to `>=3.10.0 <4.0.0` and update `json_factory_annotation` dependency to `^1.2.0`.
+ - **TEST**: align example error-message expectations with current generated `JsonFactory` runtime messages.
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
  - [`json_factory_annotation` - `v1.1.0`](#json_factory_annotation---v110)
  - [`json_factory_generator` - `v1.2.0`](#json_factory_generator---v120)
 
